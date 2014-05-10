@@ -161,15 +161,12 @@ void uart0Transmit(u08 data)
 }
 
 // Simple UART transmit function from ATmega datasheet
-// More sophisticated way is to use the TX Complete interrupt - USART_TXC_vect/USART0_TX_vect
+// More sophisticated way is to use the TX Complete interrupt - USART1_TX_vect
+// Not all AVR chips have a second UART.
+#if defined (UBRR1H)
 void uart1Transmit(u08 data)
 {
-	#if defined (UCSRA)
-		// Wait for empty transmit buffer
-		while(!(UCSRA & (1<<UDRE)));
-		// put data into buffer, which sends the data
-		UDR = data;
-	#elif defined (UCSR1A)
+	#if defined (UCSR1A)
 		// Wait for empty transmit buffer
 		while(!(UCSR1A & (1<<UDRE1)));
 		// put data into buffer, which sends the data
@@ -178,6 +175,7 @@ void uart1Transmit(u08 data)
 		#error Failed to detect which serial registers your chip uses.
 	#endif
 }
+#endif
 
 // simple UART receive function from ATmega datasheet
 // More sophisticated way is to use the RX Complete interrupt - USART_RXC_vect/USART0_RX_vect
