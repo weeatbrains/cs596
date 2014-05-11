@@ -60,6 +60,7 @@ void printHexDigit(u08 nibble);
 void printHex_u08(const u08 number);
 void printHex_u16(const u16 number);
 void printFloat(const float number);
+void printInt(const int number);
 void upperLine();
 void lowerLine();
 void lcdCursor(const u08 row, const u08 column);

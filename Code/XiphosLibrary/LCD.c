@@ -14,6 +14,7 @@
 #include "utility.h"
 #include <stdlib.h>
 #include <util/atomic.h>
+#include <stdio.h>
 
 //! LCD RAM address for the home position (row 0, col 0).
 #define HOME         0x80
@@ -395,6 +396,14 @@ void printFloat(const float number)
 	char s[10];
 	dtostre(number, s, 3, 0);
 	printString(s);
+}
+
+void printInt(const int number)
+{
+	
+	char str[15];
+	sprintf(str, "%d", number);
+	printString(str);
 }
 
 //! Moves the LCD cursor to the beginning of the first line of the display (row 0, col 0).

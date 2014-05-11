@@ -17,7 +17,7 @@ NUM_SERVOS = 0
 USE_I2C    = 0
 
 # Specify any additional .c source files containing your program code.
-FILES = serial.c
+FILES = serial.c ThinkGearStreamParser.c
 
 # The rest of the makefile is pulled in from MasterMakefile.mk in the XiphosLibrary folder.
 # This includes the PORT and ISP variables defining the programmer to be used, the MCU variable defining the target microcontroller model,
