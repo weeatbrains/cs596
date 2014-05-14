@@ -7,26 +7,24 @@
 #include <stdio.h>
 #include "ThinkGearStreamParser.h"
 
-
-
-
-
-
 // AVR-GCC library reference: http://www.nongnu.org/avr-libc/user-manual/modules.html
 
 // Define the digital pin to use for scrolling.
 #define SWITCH_SCROLL 9
+
 /* Parser types */
 #define PARSER_TYPE_NULL       0x00
 #define PARSER_TYPE_PACKETS    0x01 /* Stream bytes as ThinkGear Packets */
 #define PARSER_TYPE_2BYTERAW   0x02 /* Stream bytes as 2-byte raw data */
+
 
 /* Data CODE definitions */
 #define PARSER_BATTERY_CODE         0x01
 #define PARSER_POOR_SIGNAL_CODE     0x02
 #define PARSER_ATTENTION_CODE       0x04
 #define PARSER_MEDITATION_CODE      0x05
-#define PARSER_RAW_CODE             0x80
+#define PARSER_RAW_CODE             0x80 
+
 const u08 SYNC = 0xAA;
 
 const float potMin = 14.0 - 1; //NEED TO ADJUST FOR OUR ROBOT
@@ -41,7 +39,7 @@ volatile unsigned char plength = 170;
 volatile int pcount=0;
 volatile unsigned char payload[256];
 volatile int checksum;
-volatile double rawdata[2048];
+volatile int rawdata[2048];
 volatile int rd =0;
 volatile bool dofft = FALSE;
 ThinkGearStreamParser parser;
@@ -97,7 +95,7 @@ connectHeadset();
 
 while(1)
 {
-	if(dofft){
+	if(0){
 		clearScreen();
 		upperLine();
 		printString_P(PSTR("Doing FFT"));
@@ -112,8 +110,14 @@ while(1)
 		printInt(attention );
 		lowerLine();
 		printInt(meditation);
-		delayMs(500);
+		//delayMs(500);
 	}
+    
+    //motor control
+    if(attention>60) {motor0(157);motor1(97);}
+    else if(meditation>80) {motor0(180);motor1(127);}
+    else {motor0(127);motor1(127);}
+    delayMs(500);
 }
 
 }
@@ -152,13 +156,13 @@ void *customData ) {
 
 			case( 0x80 ):
 				if (rd<2048){
-					rawdata[rd]= (value[0]<<8) | value[1];
+					rawdata[rd]= value[0];//(value[0]<<8) | value[1];
 					rd++;
 				}
-				else
-				{
-					dofft = TRUE;
-				}
+//				else
+//				{
+//					dofft = TRUE;
+//				}
 				
 
 			break;
@@ -183,6 +187,7 @@ void *customData ) {
 	
 	}
 }
+
 
 void test02 ( void )
 
