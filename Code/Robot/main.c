@@ -136,14 +136,16 @@ while(1)
 		//test02();
         
         //fft
-        capture_wave (rawdata, 2048);
+        /*int test = */capture_wave (rawdata, 2048);
+        //printFloat(PSTR(test)); 
+        
         
         //index whcih sets data into raw data
         //continuously run fft
         rd = 0;
         dofft = FALSE;
-		
 	}
+    
 	else{
 		clearScreen();
 		upperLine();
