@@ -7,12 +7,13 @@
 #include "globals.h"
 
 //! Specifies the valid values that can be passed to the digitalDirection() function.
-typedef enum
-{
+
+typedef enum {
 	Direction_INPUT,
 	Direction_OUTPUT,
 	Direction_INPUT_PULLUP
-} DigitalDirection;
+} DigitalDirection; 
+
 
 //Prototypes
 void initialize();

@@ -1,3 +1,5 @@
+
+/*  Includes    */
 #include "globals.h"
 #include "LCD.h"
 #include "motors.h"
@@ -6,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "ThinkGearStreamParser.h"
+#include "ffft.h"
 
 // AVR-GCC library reference: http://www.nongnu.org/avr-libc/user-manual/modules.html
 
@@ -26,6 +29,8 @@
 #define PARSER_RAW_CODE             0x80 
 
 const u08 SYNC = 0xAA;
+
+void capture_wave (int16_t *buffer, uint16_t count);
 
 const float potMin = 14.0 - 1; //NEED TO ADJUST FOR OUR ROBOT
 const float potMax = 236.0 - 5; // NEED TO ADJUST FOR OUR ROBOT
@@ -90,18 +95,28 @@ int main()
 
 
  THINKGEAR_initParser( &parser, PARSER_TYPE_PACKETS,
- handleDataValueFunc, NULL );
-connectHeadset();
+handleDataValueFunc, NULL );
+    connectHeadset();
+    
+    
 
 while(1)
 {
-	if(0){
+	if(dofft){
 		clearScreen();
 		upperLine();
 		printString_P(PSTR("Doing FFT"));
 		lowerLine();
 		printString_P(PSTR("Please Hold..."));
-		test02();
+		//test02();
+        
+        //fft
+        capture_wave (rawdata, 2048);
+        
+        //index whcih sets data into raw data
+        //continuously run fft
+        rd = 0;
+        dofft = FALSE;
 		
 	}
 	else{
@@ -159,10 +174,11 @@ void *customData ) {
 					rawdata[rd]= value[0];//(value[0]<<8) | value[1];
 					rd++;
 				}
-//				else
-//				{
-//					dofft = TRUE;
-//				}
+				
+                else
+				{
+					dofft = TRUE;
+				}
 				
 
 			break;
@@ -189,10 +205,24 @@ void *customData ) {
 }
 
 
-void test02 ( void )
-
+void capture_wave (int16_t *buffer, uint16_t count)
 {
-
+	ADMUX = _BV(REFS0)|_BV(ADLAR)|_BV(MUX2)|_BV(MUX1)|_BV(MUX0);	// channel
+    
+	do {
+		ADCSRA = _BV(ADEN)|_BV(ADSC)|_BV(ADFR)|_BV(ADIF)|_BV(ADPS2)|_BV(ADPS1);
+		while(bit_is_clear(ADCSRA, ADIF));
+		*buffer++ = ADC - 32768;
+	} while(--count);
+    
+	ADCSRA = 0;
 }
+
+//debugging
+//void test02 ( void )
+//
+//{
+//
+//}
 
 
