@@ -10,6 +10,20 @@
 #include "ThinkGearStreamParser.h"
 #include "ffft.h"
 
+
+/*
+    variables for capture_wave defined externally libraries
+ */
+#include <avr/io.h>
+#include <avr/pgmspace.h>
+#include "suart.h"
+
+//added
+#include <util/delay.h>
+#include <avr/interrupt.h>
+
+#define	SYSCLK		16000000
+
 // AVR-GCC library reference: http://www.nongnu.org/avr-libc/user-manual/modules.html
 
 // Define the digital pin to use for scrolling.
@@ -44,7 +58,15 @@ volatile unsigned char plength = 170;
 volatile int pcount=0;
 volatile unsigned char payload[256];
 volatile int checksum;
-volatile int rawdata[2048];
+
+/*
+ main.c: In function 'main':
+ main.c:114:9: error: passing argument 1 of 'capture_wave' discards 'volatile' qualifier from pointer target type [-Werror]
+ 
+ 
+ so taking out volatile qualifier
+ */
+/*volatile*/ int rawdata[2048];
 volatile int rd =0;
 volatile bool dofft = FALSE;
 ThinkGearStreamParser parser;

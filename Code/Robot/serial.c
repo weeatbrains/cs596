@@ -199,6 +199,18 @@ u08 uart0Receive()
 // Flushes the entire receive buffer
 void usart0Flush()
 {
+    
+    /*
+     
+     --> Error from compiler <--
+     
+     serial.c: In function 'usart0Flush':
+     serial.c:202:6: error: variable 'dummy' set but not used [-Werror=unused-but-set-variable]
+     u08 dummy;
+     ^
+     */
+    
+    
 	u08 dummy;
 	//gobbles up all the received characters in the buffer until RXC (Receive complete) goes to 0
 	#if defined (UCSRA)

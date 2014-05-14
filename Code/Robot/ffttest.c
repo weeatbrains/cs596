@@ -6,6 +6,10 @@
 #include "suart.h"		/* Defs for using Software UART module (Debugging via AVRSP-COM) */
 #include "ffft.h"		/* Defs for using Fixed-point FFT module */
 
+//added
+#include <util/delay.h>
+#include <avr/interrupt.h>
+
 #define	SYSCLK		16000000
 
 
@@ -24,18 +28,41 @@ uint16_t spektrum[FFT_N/2];		/* Spectrum output buffer */
 /*------------------------------------------------*/
 /* Capture waveform                               */
 
+//void capture_wave (int16_t *buffer, uint16_t count)
+//{
+//	ADMUX = _BV(REFS0)|_BV(ADLAR)|_BV(MUX2)|_BV(MUX1)|_BV(MUX0);	// channel
+//
+//	do {
+//		ADCSRA = _BV(ADEN)|_BV(ADSC)|_BV(ADFR)|_BV(ADIF)|_BV(ADPS2)|_BV(ADPS1);
+//		while(bit_is_clear(ADCSRA, ADIF));
+//		*buffer++ = ADC - 32768;
+//	} while(--count);
+//
+//	ADCSRA = 0;
+//}
+
+
+
+//http://read.pudn.com/downloads143/sourcecode/embed/620701/armok01168799/main.c__.htm
 void capture_wave (int16_t *buffer, uint16_t count)
 {
-	ADMUX = _BV(REFS0)|_BV(ADLAR)|_BV(MUX2)|_BV(MUX1)|_BV(MUX0);	// channel
-
-	do {
-		ADCSRA = _BV(ADEN)|_BV(ADSC)|_BV(ADFR)|_BV(ADIF)|_BV(ADPS2)|_BV(ADPS1);
-		while(bit_is_clear(ADCSRA, ADIF));
-		*buffer++ = ADC - 32768;
-	} while(--count);
-
-	ADCSRA = 0;
+    //  cli();
+    
+    ADMUX = _BV(ADLAR); // channe0
+    
+    do {
+        ADCSRA = _BV(ADEN)|_BV(ADSC)|_BV(ADFR)|_BV(ADIF)|_BV(ADPS2)|_BV(ADPS1)|_BV(ADPS0);
+        while(bit_is_clear(ADCSRA, ADIF));
+        *buffer++ = ADC - 32768;
+    } while(--count);
+    
+    ADCSRA = 0;
+    
+    //  sei();
 }
+
+
+
 
 
 /* This is an alternative function of capture_wave() and can omit captureing buffer.
