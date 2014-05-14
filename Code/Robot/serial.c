@@ -196,30 +196,34 @@ u08 uart0Receive()
 	#endif
 }
 
-// Flushes the entire receive buffer
-void usart0Flush()
-{
-    
-    /*
-     
-     --> Error from compiler <--
-     
-     serial.c: In function 'usart0Flush':
-     serial.c:202:6: error: variable 'dummy' set but not used [-Werror=unused-but-set-variable]
-     u08 dummy;
-     ^
-     */
-    
-    
-	u08 dummy;
-	//gobbles up all the received characters in the buffer until RXC (Receive complete) goes to 0
-	#if defined (UCSRA)
-		while (UCSRA & (1<<RXC))
-			dummy = UDR;
-	#elif defined (UCSR0A)
-		while (UCSR0A & (1<<RXC0))
-			dummy = UDR0;
-	#else
-		#error Failed to detect which serial registers your chip uses.
-	#endif
-}
+
+
+//temporary
+
+//// Flushes the entire receive buffer
+//void usart0Flush()
+//{
+//    
+//    /*
+//     
+//     --> Error from compiler <--
+//     
+//     serial.c: In function 'usart0Flush':
+//     serial.c:202:6: error: variable 'dummy' set but not used [-Werror=unused-but-set-variable]
+//     u08 dummy;
+//     ^
+//     */
+//    
+//    
+//	u08 dummy;
+//	//gobbles up all the received characters in the buffer until RXC (Receive complete) goes to 0
+//	#if defined (UCSRA)
+//		while (UCSRA & (1<<RXC))
+//			dummy = UDR;
+//	#elif defined (UCSR0A)
+//		while (UCSR0A & (1<<RXC0))
+//			dummy = UDR0;
+//	#else
+//		#error Failed to detect which serial registers your chip uses.
+//	#endif
+//}

@@ -24,8 +24,15 @@ void fft_execute (complex_t *);
 void fft_output (const complex_t *, uint16_t *);
 int16_t fmuls_f (int16_t, int16_t);
 
-// defined in <avr/pgmspace.h>: Program Space Utilities
-extern const prog_int16_t tbl_window[];
+/*
+this prog_int16_t struct has been deprecated according to
+http://www.nongnu.org/avr-libc/user-manual/group__avr__pgmspace.html#ga75acaba9e781937468d0911423bc0c35
+defined in <avr/pgmspace.h>: Program Space Utilities 
+ */
+//extern const prog_int16_t tbl_window[];
+
+
+//typdef extern
 
 
 
@@ -54,7 +61,7 @@ extern const prog_int16_t tbl_window[];
 #define CL	r20
 #define CH	r21
 #define DL	r22
-#define DH	r23
+#define DH	r23 
 #define EL	r24
 #define EH	r25
 #define XL	r26

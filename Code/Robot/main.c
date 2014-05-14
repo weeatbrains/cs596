@@ -124,7 +124,7 @@ handleDataValueFunc, NULL );
     connectHeadset();
     
     
-
+//super loop
 while(1)
 {
 	if(dofft){
@@ -153,10 +153,19 @@ while(1)
 		//delayMs(500);
 	}
     
-    //motor control
-    if(attention>60) {motor0(157);motor1(97);}
-    else if(meditation>80) {motor0(180);motor1(127);}
-    else {motor0(127);motor1(127);}
+    //motor control based on mindwave headset readings
+    if(attention>60){
+        motor0(157);
+        motor1(97);
+    }
+    else if(meditation>80){
+        motor0(180);
+        motor1(127);
+    }
+    else {
+        motor0(127);
+        motor1(127);
+    }
     delayMs(500);
 }
 
@@ -235,7 +244,15 @@ void capture_wave (int16_t *buffer, uint16_t count)
 	ADMUX = _BV(REFS0)|_BV(ADLAR)|_BV(MUX2)|_BV(MUX1)|_BV(MUX0);	// channel
     
 	do {
-		ADCSRA = _BV(ADEN)|_BV(ADSC)|_BV(ADFR)|_BV(ADIF)|_BV(ADPS2)|_BV(ADPS1);
+        /*
+         ADCSR - The ADC Control and Status Register
+         
+         Bit 5 is the ADFR:  ADC Free Running Select
+         Writing a logical '1' to this bit enables the Free Running Mode where 
+         the ADC samples and updates the data registers continuously. Clearing 
+         this bit will terminate the mode.
+         */
+		ADCSRA = _BV(ADEN)|_BV(ADSC)|_BV(1)|_BV(ADIF)|_BV(ADPS2)|_BV(ADPS1);
 		while(bit_is_clear(ADCSRA, ADIF));
 		*buffer++ = ADC - 32768;
 	} while(--count);
