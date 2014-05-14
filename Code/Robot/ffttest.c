@@ -1,6 +1,10 @@
 /*------------------------------------------------*/
 /* FFTEST : A test program for FFT module         */
 
+
+//embedded systems header files
+//http://www.nikhef.nl/~vincentb/km3net/emb_sw_ref/suart_8c_source.html
+
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include "suart.h"		/* Defs for using Software UART module (Debugging via AVRSP-COM) */

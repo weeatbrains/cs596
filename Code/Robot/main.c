@@ -1,14 +1,15 @@
 
 /*  Includes    */
+#include <stdlib.h>
+#include <stdio.h>
+#include "ThinkGearStreamParser.h"
+#include "ffft.h"
 #include "globals.h"
 #include "LCD.h"
 #include "motors.h"
 #include "serial.h"
 #include "utility.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include "ThinkGearStreamParser.h"
-#include "ffft.h"
+
 
 
 /*
@@ -26,8 +27,6 @@
 
 // AVR-GCC library reference: http://www.nongnu.org/avr-libc/user-manual/modules.html
 
-// Define the digital pin to use for scrolling.
-#define SWITCH_SCROLL 9
 
 /* Parser types */
 #define PARSER_TYPE_NULL       0x00
@@ -40,7 +39,11 @@
 #define PARSER_POOR_SIGNAL_CODE     0x02
 #define PARSER_ATTENTION_CODE       0x04
 #define PARSER_MEDITATION_CODE      0x05
-#define PARSER_RAW_CODE             0x80 
+#define PARSER_RAW_CODE             0x80
+
+
+// Define the digital pin to use for scrolling.
+#define SWITCH_SCROLL 9
 
 const u08 SYNC = 0xAA;
 
