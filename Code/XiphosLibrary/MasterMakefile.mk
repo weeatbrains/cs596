@@ -77,7 +77,7 @@ endif
 #tried unsuccessfully to remove unused code with: -Wl,-static -ffunction-sections -fdata-sections
 #the -g is required to get C code interspersed in the disassembly listing
 all:
-	avr-gcc -g -mmcu=$(MCU) $(DEFINES) -I . -I $(LIB) -Os -Wall -Werror -mcall-prologues -std=gnu99 -o $(PROJECTNAME).elf $(FILES) $(PROJECTNAME).c -lm
+	avr-gcc -g -mmcu=$(MCU) $(DEFINES) -I . -I $(LIB) -I $(INCLUDES) -Os -Wall -Werror -mcall-prologues -std=gnu99 -o $(PROJECTNAME).elf $(PROJECTNAME).c $(FILES) -lm
 	avr-objcopy -O ihex $(PROJECTNAME).elf $(PROJECTNAME).hex
 	avr-size $(PROJECTNAME).elf
 
