@@ -92,11 +92,8 @@ void *customData );
 
 ISR(USART1_RX_vect)
 {
-	
 	u08 data = UDR1;
 	THINKGEAR_parseByte( &parser, data);
-
-
 }
 
 
@@ -137,7 +134,7 @@ while(1)
         
         //fft
         /*int test = */capture_wave (rawdata, 2048);
-        //printFloat(PSTR(test)); 
+        //printFloat(PSTR(test));
         
         
         //index whcih sets data into raw data
@@ -247,7 +244,7 @@ void capture_wave (int16_t *buffer, uint16_t count)
     
 	do {
         /*
-         ADCSR - The ADC Control and Status Register
+         ADCSRA - The ADC Control and Status Register C
          
          Bit 5 is the ADFR:  ADC Free Running Select
          Writing a logical '1' to this bit enables the Free Running Mode where 
@@ -255,7 +252,11 @@ void capture_wave (int16_t *buffer, uint16_t count)
          this bit will terminate the mode.
          */
 		ADCSRA = _BV(ADEN)|_BV(ADSC)|_BV(1)|_BV(ADIF)|_BV(ADPS2)|_BV(ADPS1);
+        
+        //ADIF is the ADC Interrupt Flag
 		while(bit_is_clear(ADCSRA, ADIF));
+        //then the next element in the buffer gets ADC
+        //minus 32768
 		*buffer++ = ADC - 32768;
 	} while(--count);
     
