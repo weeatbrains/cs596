@@ -8,7 +8,7 @@
 
 // Includes
 // ArduinoFFT library from: http://wiki.openmusiclabs.com/wiki/ArduinoFFT
-#include "FFT.h"
+//#include "FFT.h"
 #include "globals.h"
 #include "LCD.h"
 #include "motors.h"
@@ -77,7 +77,9 @@ int main()
   u16 cycles = 0;
   u16 samplesCopy;
   char str[10];
-  while (1)
+  
+    
+while (1)
   {
     // Print 4 individual values across the top line.
     upperLine();
@@ -209,6 +211,8 @@ inline static void stop()
 {
   motor0(127);
   motor1(127);
+    stop(); //call recursively to make absolute stop
+    
 }
 
 static void connectHeadset()
